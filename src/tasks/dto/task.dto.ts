@@ -1,27 +1,28 @@
-import { Task, TaskStatus } from '../task.entity'
-import { IsIn, IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator'
+import { TaskStatus } from '../task.entity';
+import { IsIn, IsOptional, IsString, MinLength } from 'class-validator';
 
 export class CreateTaskDto {
   @IsString()
-  @IsNotEmpty()
   @MinLength(3)
-  title: string
+  title: string;
 
   @IsString()
-  desc: string
+  @MinLength(3)
+  desc: string;
 }
 
 export class UpdateTaskDto {
   @IsString()
   @IsOptional()
-  title?: string
+  @MinLength(3)
+  title: string;
 
   @IsString()
   @IsOptional()
-  description?: string
+  @MinLength(3)
+  desc: string;
 
-  @IsString()
   @IsOptional()
   @IsIn([TaskStatus.DONE, TaskStatus.IN_PROGRESS, TaskStatus.PENDING])
-  status?: TaskStatus
+  status: string;
 }

@@ -1,41 +1,35 @@
 import { Injectable } from '@nestjs/common';
-import { Task, TaskStatus } from './task.entity';
-import { v4 } from 'uuid';
+import { Task, TaskInterface, TaskStatus } from './task.entity';
 import { CreateTaskDto, UpdateTaskDto } from './dto/task.dto';
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class TasksService {
-  private tasks: Task[] = [
-    {
-      id: '1',
-      title: 'first task',
-      desc: 'some task description',
-      status: TaskStatus.PENDING,
-    },
-  ];
-  getAllTasks() {
-    return this.tasks;
+  constructor(
+    @InjectModel('Task')
+    private readonly taskModel: Model<TaskInterface>,
+  ) {}
+  async getAllTasks(): Promise<Task[]> {
+    const tasks = await this.taskModel.find();
+    return tasks;
   }
-  createTask(title: string, desc: string) {
-    const task = {
-      id: v4(),
-      title,
-      desc,
-      status: TaskStatus.PENDING,
-    };
-    this.tasks.push(task);
+  async getTaskById(id: string): Promise<Task> {
+    const task = await this.taskModel.findById(id);
     return task;
   }
-  deleteTask(id: string) {
-    this.tasks = this.tasks.filter((task) => task.id !== id);
+  async createTask(newTask: CreateTaskDto): Promise<Task> {
+    const task = new this.taskModel({ status: TaskStatus.PENDING, ...newTask });
+    return await task.save();
   }
-  getTasksById(id: string): Task {
-    return this.tasks.find((task) => task.id === id);
+  async deleteTask(id: string): Promise<Task> {
+    const deletedTask = await this.taskModel.findByIdAndDelete(id);
+    return deletedTask;
   }
-  updateTask(id: string, updatedFields: UpdateTaskDto): Task {
-    const task = this.getTasksById(id)
-    const newTask = Object.assign(task, updatedFields)
-    this.tasks = this.tasks.map(task => task.id === id ? newTask : task)
-    return newTask
+  async updateTask(id: string, updatedTask: UpdateTaskDto): Promise<Task> {
+    const task = await this.taskModel.findByIdAndUpdate(id, updatedTask, {
+      new: true,
+    });
+    return task;
   }
 }
