@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CommercesService } from '../commerces/commerces.service';
 import { JwtService } from '@nestjs/jwt';
+import { CreateCommerceDto } from 'src/commerces/dto/commerce.dto';
 
 @Injectable()
 export class AuthService {
@@ -24,5 +25,9 @@ export class AuthService {
     return {
       access_token: this.jwtService.sign(payload),
     };
+  }
+
+  async register(newCommerce: CreateCommerceDto) {
+    return this.commercesService.createCommerce(newCommerce);
   }
 }

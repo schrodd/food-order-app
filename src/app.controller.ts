@@ -1,7 +1,15 @@
-import { Controller, Request, Post, UseGuards, Get } from '@nestjs/common';
+import {
+  Controller,
+  Request,
+  Post,
+  UseGuards,
+  Get,
+  Body,
+} from '@nestjs/common';
 import { LocalAuthGuard } from './auth/local-auth.guard';
 import { AuthService } from './auth/auth.service';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
+import { CreateCommerceDto } from './commerces/dto/commerce.dto';
 
 @Controller()
 export class AppController {
@@ -17,5 +25,10 @@ export class AppController {
   @Get('profile')
   getProfile(@Request() req) {
     return req.user;
+  }
+
+  @Post('register')
+  register(@Body() newCommerce: CreateCommerceDto) {
+    return this.authService.register(newCommerce);
   }
 }
