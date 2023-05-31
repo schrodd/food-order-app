@@ -17,7 +17,7 @@ export const CommerceSchema = new Schema(
     openHours: String,
     phoneNumber: String,
     address: String,
-    tables: [TableSchema],
+    tables: Array,
     user: String,
     password: String,
   },

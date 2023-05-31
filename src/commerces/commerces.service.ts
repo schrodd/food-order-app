@@ -13,7 +13,7 @@ export class CommercesService {
   constructor(
     @InjectModel('Commerce')
     private commerceModel: Model<Commerce>,
-  ) {}
+  ) { }
   async getAllCommerces(): Promise<Commerce[]> {
     const commerces = await this.commerceModel.find();
     return commerces;
@@ -58,5 +58,9 @@ export class CommercesService {
       },
     );
     return commerce ? commerce : 'Commerce not found';
+  }
+  async checkIfCommerceExists(id: string): Promise<boolean> {
+    const commerce = await this.commerceModel.findById(id)
+    return commerce ? true : false
   }
 }
