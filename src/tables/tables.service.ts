@@ -35,4 +35,14 @@ export class TablesService {
   remove(id: number) {
     return `This action removes a #${id} table`;
   }
+
+  createSafetyCode(): string {
+    const length = 4
+    let s = '';
+    Array.from({ length }).some(() => {
+      s += Math.random().toString(36).slice(2);
+      return s.length >= length;
+    });
+    return s.slice(0, length).toUpperCase();
+  }
 }
