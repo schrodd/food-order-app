@@ -22,11 +22,11 @@ export class TablesService {
     return await table.save();
   }
 
-  async findAll(userId: string) {
+  async findAll(userId: string): Promise<Table[]> {
     return await this.tableModel.find({ owner: userId });
   }
 
-  async findOne(userId: string, tableNumber: number) {
+  async findOne(userId: string, tableNumber: number): Promise<Table> {
     const table = await this.tableModel.findOne({
       owner: userId,
       tableNumber: tableNumber,
@@ -42,26 +42,30 @@ export class TablesService {
     userId: string,
     tableNumber: number,
     updateTableDto: UpdateTableDto,
-  ) {
-    try {
-      const updatedTable = await this.tableModel.findOneAndUpdate(
-        { owner: userId, tableNumber },
-        updateTableDto,
-        { new: true },
+  ): Promise<Table> {
+    const updatedTable = await this.tableModel.findOneAndUpdate(
+      { owner: userId, tableNumber },
+      updateTableDto,
+    );
+    if (!updatedTable)
+      throw new NotFoundException(
+        `User id ${userId} doesnt own a table #${tableNumber}`,
       );
-      if (!updatedTable) {
-        throw new NotFoundException(`Table #${tableNumber} not found`);
-      }
-      return updatedTable;
-    } catch (error) {
-      throw new ConflictException(`Table #${tableNumber} already exists`);
-    }
+    return updatedTable;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} table`;
+  async remove(userId: string, tableNumber: number): Promise<Table> {
+    const deletedTable = await this.tableModel.findOneAndDelete({
+      owner: userId,
+      tableNumber,
+    });
+    if (!deletedTable)
+      throw new NotFoundException(
+        `User id ${userId} doesnt own a table #${tableNumber}`,
+      );
+    return deletedTable;
   }
-  async findSafeTableNumber(userId): Promise<number> {
+  async findSafeTableNumber(userId: string): Promise<number> {
     const tables = await this.findAll(userId);
     const occupiedTableNumbers = tables.map((e) => e.tableNumber);
     let safe = 1;

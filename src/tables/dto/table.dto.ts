@@ -1,4 +1,5 @@
 import {
+  Allow,
   IsArray,
   IsBoolean,
   IsIn,
@@ -6,9 +7,11 @@ import {
   IsString,
   Max,
   Min,
+  ValidateIf,
 } from 'class-validator';
 import { PartialType } from '@nestjs/mapped-types';
 import { tableStatus } from '../table.entity';
+import { TablesService } from '../tables.service';
 
 class UpdateTableDtoProto {
   @IsString()
@@ -16,9 +19,6 @@ class UpdateTableDtoProto {
 
   @IsArray()
   products: unknown[];
-
-  @IsString()
-  safetyCode: string;
 
   @IsNumber()
   @Min(1)

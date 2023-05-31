@@ -28,11 +28,6 @@ export class TablesController {
     return this.tablesService.findAll(req.user.userId);
   }
 
-  @Get('safe-table-number')
-  getSafeTableNumber(@Request() req) {
-    return this.tablesService.findSafeTableNumber(req.user.userId);
-  }
-
   @Get(':tableNumber')
   findOne(@Request() req, @Param('tableNumber') tableNumber: number) {
     return this.tablesService.findOne(req.user.userId, tableNumber);
@@ -51,8 +46,11 @@ export class TablesController {
     );
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.tablesService.remove(+id);
+  @Delete(':tableNumber')
+  remove(@Request() req, @Param('tableNumber') tableNumber: string) {
+    return this.tablesService.remove(
+      req.user.userId,
+      Number.parseInt(tableNumber),
+    );
   }
 }
