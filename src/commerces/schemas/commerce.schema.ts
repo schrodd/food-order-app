@@ -1,15 +1,5 @@
 import { Schema } from 'mongoose';
 
-const ProductSchema = new Schema({
-  id: String,
-  qty: Number,
-});
-
-const TableSchema = new Schema({
-  tableNo: Number,
-  products: [ProductSchema],
-});
-
 export const CommerceSchema = new Schema(
   {
     name: String,

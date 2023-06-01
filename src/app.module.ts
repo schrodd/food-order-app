@@ -5,6 +5,7 @@ import { CommercesModule } from './commerces/commerces.module';
 import { AuthModule } from './auth/auth.module';
 import { AppController } from './app.controller';
 import { TablesModule } from './tables/tables.module';
+import { ProductsModule } from './products/products.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { TablesModule } from './tables/tables.module';
     CommercesModule,
     AuthModule,
     TablesModule,
+    ProductsModule,
   ],
   controllers: [AppController],
 })

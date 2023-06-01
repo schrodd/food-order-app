@@ -8,9 +8,10 @@ import { CommercesModule } from 'src/commerces/commerces.module';
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: 'Table', schema: TableSchema }]),
-    CommercesModule
+    CommercesModule,
   ],
   controllers: [TablesController],
-  providers: [TablesService]
+  providers: [TablesService],
+  exports: [TablesService],
 })
-export class TablesModule { }
+export class TablesModule {}

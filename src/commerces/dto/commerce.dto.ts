@@ -1,4 +1,10 @@
-import { IsOptional, IsString, Matches, MinLength } from 'class-validator';
+import {
+  IsIn,
+  IsOptional,
+  IsString,
+  Matches,
+  MinLength,
+} from 'class-validator';
 
 const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,20}$/;
 const passFailMessage = {
@@ -71,4 +77,8 @@ export class UpdateCommerceDto {
   @IsOptional()
   @Matches(passRegex, passFailMessage)
   password: string;
+
+  @IsOptional()
+  @IsIn([], { message: "ID's are not mutable" })
+  _id: string;
 }
