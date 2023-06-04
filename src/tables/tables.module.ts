@@ -4,11 +4,13 @@ import { TablesController } from './tables.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { TableSchema } from './schemas/table.schema';
 import { CommercesModule } from 'src/commerces/commerces.module';
+import { ProductsModule } from 'src/products/products.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: 'Table', schema: TableSchema }]),
     CommercesModule,
+    ProductsModule,
   ],
   controllers: [TablesController],
   providers: [TablesService],

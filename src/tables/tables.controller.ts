@@ -10,7 +10,7 @@ import {
   Request,
 } from '@nestjs/common';
 import { TablesService } from './tables.service';
-import { UpdateTableDto } from './dto/table.dto';
+import { ManageProductsDto, UpdateTableDto } from './dto/table.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @UseGuards(JwtAuthGuard)
@@ -21,6 +21,18 @@ export class TablesController {
   @Post()
   create(@Request() req) {
     return this.tablesService.create(req.user.userId);
+  }
+  @Post('/manage-products/:tableNumber')
+  manageProduct(
+    @Request() req,
+    @Param('tableNumber') tableNumber: number,
+    @Body() addProductDto: ManageProductsDto,
+  ) {
+    return this.tablesService.manageProduct(
+      req.user.userId,
+      tableNumber,
+      addProductDto,
+    );
   }
 
   @Get()

@@ -1,4 +1,4 @@
-import { Document, ObjectId } from 'mongoose';
+import { Document, ObjectId, Date } from 'mongoose';
 
 export interface Product extends Document {
   _id: ObjectId;
@@ -9,4 +9,6 @@ export interface Product extends Document {
   sku: string;
   description: string;
   hidden: true | false;
+  createdAt: Date;
+  updatedAt: Date;
 }

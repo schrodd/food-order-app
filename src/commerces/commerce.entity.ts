@@ -1,4 +1,4 @@
-import { Document, ObjectId } from 'mongoose';
+import { Document, ObjectId, Date } from 'mongoose';
 
 export interface Commerce extends Document {
   _id: ObjectId;
@@ -10,4 +10,6 @@ export interface Commerce extends Document {
   tables: unknown[];
   user: string;
   password: string;
+  createdAt: Date;
+  updatedAt: Date;
 }

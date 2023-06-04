@@ -65,10 +65,19 @@ export class ProductsService {
     }
     return deletedProd;
   }
+
   async skuExists(userId: string, sku: string): Promise<boolean> {
     // checks if this commerce already owns a product with sku = [sku]
     // multiple commerces can have the same sku in one of their products
     const exists = await this.productModel.findOne({ owner: userId, sku });
+    return exists ? true : false;
+  }
+
+  async idExists(userId: string, productId: string): Promise<boolean> {
+    const exists = await this.productModel.findOne({
+      owner: userId,
+      _id: productId,
+    });
     return exists ? true : false;
   }
 }

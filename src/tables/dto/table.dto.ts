@@ -1,4 +1,5 @@
 import {
+  ArrayNotEmpty,
   IsArray,
   IsBoolean,
   IsIn,
@@ -7,6 +8,7 @@ import {
   IsString,
   Max,
   Min,
+  MinLength,
 } from 'class-validator';
 import { PartialType } from '@nestjs/mapped-types';
 import { tableStatus } from '../table.entity';
@@ -16,7 +18,7 @@ class UpdateTableDtoProto {
   owner: string;
 
   @IsArray()
-  products: unknown[];
+  products: { productId: string; qty: number }[];
 
   @IsNumber()
   @Min(1)
@@ -31,8 +33,12 @@ class UpdateTableDtoProto {
   hidden: boolean;
 }
 
-export class UpdateTableDto extends PartialType(UpdateTableDtoProto) {
-  @IsOptional()
-  @IsIn([], { message: "ID's are not mutable" })
-  _id: string;
+export class UpdateTableDto extends PartialType(UpdateTableDtoProto) {}
+
+export class ManageProductsDto {
+  @IsString()
+  productId: string;
+  @IsNumber()
+  //@Min(1)
+  qty: number;
 }

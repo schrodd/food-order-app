@@ -1,4 +1,4 @@
-import { Document, ObjectId } from 'mongoose';
+import { Document, ObjectId, Date } from 'mongoose';
 
 export enum tableStatus {
   AVAILABLE = 'AVAILABLE',
@@ -6,11 +6,18 @@ export enum tableStatus {
   RESERVED = 'RESERVED',
 }
 
+interface TableProduct {
+  productId: string;
+  qty: number;
+}
+
 export interface Table extends Document {
   _id: ObjectId;
   owner: string;
-  products: unknown[];
+  products: TableProduct[];
   safetyCode: string;
   tableNumber: number;
   status: tableStatus.AVAILABLE | tableStatus.OCCUPIED | tableStatus.RESERVED;
+  createdAt: Date;
+  updatedAt: Date;
 }
