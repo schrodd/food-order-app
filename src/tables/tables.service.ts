@@ -95,6 +95,7 @@ export class TablesService {
     addProductDto: ManageProductsDto,
   ): Promise<Document> {
     // works with both positive and negative numbers
+    // so you can add or reduce items
     const product = await this.productsService.idExists(
       userId,
       addProductDto.productId,
