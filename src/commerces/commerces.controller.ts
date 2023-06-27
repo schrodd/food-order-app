@@ -6,9 +6,12 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
+  Request,
 } from '@nestjs/common';
 import { CommercesService } from './commerces.service';
 import { CreateCommerceDto, UpdateCommerceDto } from './dto/commerce.dto';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('commerces')
 export class CommercesController {
@@ -19,7 +22,13 @@ export class CommercesController {
     return this.commerceService.getAllCommerces();
   }
 
-  @Get('/:id')
+  @UseGuards(JwtAuthGuard)
+  @Get('/my-data')
+  getCommerceByAuthOwner(@Request() req) {
+    return this.commerceService.getCommerceById(req.user.userId);
+  }
+
+  @Get('/id/:id')
   getCommerceById(@Param('id') id: string) {
     return this.commerceService.getCommerceById(id);
   }

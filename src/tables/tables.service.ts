@@ -4,12 +4,14 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Table } from './table.entity';
 import { ManageProductsDto, UpdateTableDto } from './dto/table.dto';
 import { ProductsService } from 'src/products/products.service';
+import { WsGateway } from 'src/websockets/ws.gateway';
 
 @Injectable()
 export class TablesService {
   constructor(
     @InjectModel('Table') private tableModel: Model<Table>,
     private productsService: ProductsService,
+    private wsGateway: WsGateway,
   ) {}
 
   async create(userId: string): Promise<Document> {
@@ -19,6 +21,7 @@ export class TablesService {
       tableNumber: safeTableNumber,
       safetyCode: this.createSafetyCode(),
     });
+    this.wsGateway.dataUpdate(userId);
     return await table.save();
   }
 
@@ -64,6 +67,7 @@ export class TablesService {
       throw new NotFoundException(
         `User id ${userId} doesnt own a table #${tableNumber}`,
       );
+    this.wsGateway.dataUpdate(userId);
     return deletedTable;
   }
 
@@ -114,5 +118,9 @@ export class TablesService {
     // clean less than one in qty
     table.products = table.products.filter((e) => e.qty > 0);
     return await this.update(userId, tableNumber, { products: table.products });
+  }
+  async changeSafetyCode(userId: string, tableNumber: number) {
+    const safetyCode = await this.createSafetyCode();
+    return await this.update(userId, tableNumber, { safetyCode });
   }
 }

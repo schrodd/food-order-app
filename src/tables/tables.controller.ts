@@ -35,6 +35,14 @@ export class TablesController {
     );
   }
 
+  @Patch('change-safety-number/:tableNumber')
+  changeSafetyNumber(
+    @Request() req,
+    @Param('tableNumber') tableNumber: number,
+  ) {
+    return this.tablesService.changeSafetyCode(req.user.userId, tableNumber);
+  }
+
   @Get()
   findAll(@Request() req) {
     return this.tablesService.findAll(req.user.userId);

@@ -7,6 +7,7 @@ import {
   IsOptional,
   IsString,
   Max,
+  MaxLength,
   Min,
   MinLength,
 } from 'class-validator';
@@ -31,6 +32,10 @@ class UpdateTableDtoProto {
 
   @IsBoolean()
   hidden: boolean;
+
+  @IsString()
+  @MaxLength(4)
+  safetyCode: string;
 }
 
 export class UpdateTableDto extends PartialType(UpdateTableDtoProto) {}

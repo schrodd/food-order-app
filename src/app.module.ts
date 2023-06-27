@@ -7,6 +7,7 @@ import { AppController } from './app.controller';
 import { TablesModule } from './tables/tables.module';
 import { ProductsModule } from './products/products.module';
 import { OrdersModule } from './orders/orders.module';
+import { WsModule } from './websockets/ws.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { OrdersModule } from './orders/orders.module';
     TablesModule,
     ProductsModule,
     OrdersModule,
+    WsModule,
   ],
   controllers: [AppController],
 })
