@@ -14,20 +14,18 @@ import { Server, Socket } from 'socket.io';
   },
 })
 export class WsGateway {
-  constructor() {}
-
   @WebSocketServer() private server: Server;
-
-  dataUpdate(userId: string = 'group') {
-    // event that tells frontend that data has been updated and must be fetched again
-    this.server.to(userId).emit('data-update');
-  }
 
   handleConnection(client: Socket) {
     // on connection, add socket to a group with the id of the commerce
     // so it can receive data updates from other tabs or devices instantly
     const userId = client.handshake.query?.userId || 'no-id';
     client.join(userId);
+  }
+
+  dataUpdate(userId = 'group') {
+    // event that tells frontend that data has been updated and must be fetched again
+    this.server.to(userId).emit('data-update');
   }
 
   @SubscribeMessage('event')
